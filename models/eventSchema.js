@@ -22,7 +22,6 @@ var eventSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        required: true,
       },
       about: {
         type: String,
@@ -36,7 +35,6 @@ var eventSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        required: true,
       },
       about: {
         type: String,
@@ -50,11 +48,9 @@ var eventSchema = new mongoose.Schema({
     {
       data_type: {
         type: String,
-        required: true,
       },
       data: {
         type: String,
-        required: true,
       },
     },
   ],
@@ -62,8 +58,20 @@ var eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  organised_by: [],
-  tags: [],
+  organised_by: [
+    {
+      name: {
+        type: String,
+      },
+    },
+  ],
+  tags: [
+    {
+      tag: {
+        type: String,
+      },
+    },
+  ],
 });
 
 //Export the model
