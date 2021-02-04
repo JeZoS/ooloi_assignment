@@ -1,6 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const Event = require("../models/eventSchema");
+
+//
+//
+//get Event GET --:port/event/:id
+router.get("/:id", async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (event) {
+      res.send({
+        message: "Success",
+        event: event,
+      });
+    } else {
+      res.send({
+        error: "Failed : event no found",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.send({
+      error: err,
+    });
+  }
+});
+
 //
 //
 //Create Event   POST   localhost:port/event
@@ -37,6 +62,7 @@ router.post("/", async (req, res) => {
     res.send({ error: err });
   }
 });
+
 //
 //
 //Update Event   POST   localhost:port/event/:id
@@ -72,6 +98,7 @@ router.post("/:id", async (req, res) => {
     });
   }
 });
+
 //
 //
 //Delete event  POST localhost:port/event/:id
