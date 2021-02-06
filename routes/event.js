@@ -1,6 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const Event = require("../models/eventSchema");
+const multer = require("multer");
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    console.log(file);
+    // console.log(req);
+
+    //
+    // file.images.map((el) => {
+
+    cb(null, file.originalname);
+    // });
+  },
+});
+const upload = multer({ storage: storage });
 
 //
 //
@@ -29,39 +46,45 @@ router.get("/:id", async (req, res) => {
 //
 //
 //Create Event   POST   localhost:port/event
-router.post("/", async (req, res) => {
-  try {
-    const {
-      title,
-      reg_link,
-      when,
-      about_ev,
-      speakers,
-      moderator,
-      material,
-      joining_info,
-      organised_by,
-      tags,
-    } = req.body;
-    const event = new Event({
-      title,
-      reg_link,
-      when,
-      about_ev,
-      speakers,
-      moderator,
-      material,
-      joining_info,
-      organised_by,
-      tags,
-    });
-    const newEvent = await event.save();
-    res.send({ created_event: newEvent });
-  } catch (err) {
-    console.log(err);
-    res.send({ error: err });
+router.post(
+  "/",
+  upload.fields([{ name: "images" }, { name: "pdfs" }]),
+  async (req, res) => {
+    console.log(req.body);
+    res.send({ ok: "ok" });
+    // try {
+    //   const {
+    //     title,
+    //     reg_link,
+    //     when,
+    //     about_ev,
+    //     speakers,
+    //     moderator,
+    //     material,
+    //     joining_info,
+    //     organised_by,
+    //     tags,
+    //   } = req.body;
+    //   const event = new Event({
+    //     title,
+    //     reg_link,
+    //     when,
+    //     about_ev,
+    //     speakers,
+    //     moderator,
+    //     material,
+    //     joining_info,
+    //     organised_by,
+    //     tags,
+    //   });
+    //   const newEvent = await event.save();
+    //   res.send({ created_event: newEvent });
+    // } catch (err) {
+    //   console.log(err);
+    //   res.send({ error: err });
+    // }
   }
-});
+);
 
 //
 //
