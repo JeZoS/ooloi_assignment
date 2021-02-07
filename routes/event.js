@@ -2,26 +2,27 @@ const express = require("express");
 const router = express.Router();
 const Event = require("../models/eventSchema");
 const multer = require("multer");
+//
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    console.log(file);
-    // console.log(req);
-
-    //
-    // file.images.map((el) => {
-
-    cb(null, file.originalname);
-    // });
+    var filname = new Date().toISOString() + file.originalname;
+    if (!req.body[file.fieldname]) {
+      req.body[file.fieldname] = [{ type: file.mimetype, asset: filname }];
+    } else {
+      req.body[file.fieldname].push({ type: file.mimetype, asset: filname });
+    }
+    cb(null, filname);
   },
 });
 const upload = multer({ storage: storage });
 
 //
 //
-//get Event GET --:port/event/:id
+//get Event  GET ----localhost:port/event/:id
 router.get("/:id", async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -45,11 +46,27 @@ router.get("/:id", async (req, res) => {
 
 //
 //
-//Create Event   POST   localhost:port/event
+//Create Event  POST ----localhost:port/event
 router.post(
   "/",
-  upload.fields([{ name: "images" }, { name: "pdfs" }]),
+  upload.fields([
+    { name: "unstructured" },
+    { name: "moderator" },
+    { name: "speakers" },
+  ]),
   async (req, res) => {
+    // console.log(req.body);
+    req.body.unstructured.map((el, idx) => {
+      var st = (typeof el).toString();
+      if (st == "string") {
+        st = el.split(" ");
+        req.body.unstructured[idx] = {
+          type: st[0],
+          subtype: st[1],
+          asset: st[2],
+        };
+      }
+    });
     console.log(req.body);
     res.send({ ok: "ok" });
     // try {
@@ -60,7 +77,7 @@ router.post(
     //     about_ev,
     //     speakers,
     //     moderator,
-    //     material,
+    //     unstructured,
     //     joining_info,
     //     organised_by,
     //     tags,
@@ -88,7 +105,7 @@ router.post(
 
 //
 //
-//Update Event   POST   localhost:port/event/:id
+//Update Event  POST ----localhost:port/event/:id
 router.post("/:id", async (req, res) => {
   const event = await Event.findById(req.params.id);
   if (event) {
@@ -124,7 +141,7 @@ router.post("/:id", async (req, res) => {
 
 //
 //
-//Delete event  POST localhost:port/event/:id
+//Delete event  POST ----localhost:port/event/:id
 router.delete("/:id", async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
