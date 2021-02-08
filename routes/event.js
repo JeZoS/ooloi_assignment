@@ -9,6 +9,7 @@ var storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
+    // console.log(req);
     var filname =
       file.originalname +
       new Date().toISOString() +
@@ -73,6 +74,10 @@ router.post(
         }
       });
     }
+    // if (req.body.moderator) {
+    //   var len = req.body.moderator.length;
+    //   console.log(len);
+    // }
     console.log(req.body);
     res.send({ ok: "ok" });
     // try {
@@ -163,4 +168,4 @@ router.post(
 //   }
 // });
 
-// module.exports = router;
+module.exports = router;
