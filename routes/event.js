@@ -9,7 +9,12 @@ var storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    var filname = new Date().toISOString() + file.originalname;
+    // console.log(req);
+    var filname =
+      file.originalname +
+      new Date().toISOString() +
+      "." +
+      file.mimetype.split("/")[1];
     if (!req.body[file.fieldname]) {
       req.body[file.fieldname] = [{ type: file.mimetype, asset: filname }];
     } else {
@@ -55,19 +60,25 @@ router.post(
     { name: "speakers" },
   ]),
   async (req, res) => {
-    // console.log(req.body);
-    req.body.unstructured.map((el, idx) => {
-      var st = (typeof el).toString();
-      if (st == "string") {
-        st = el.split(" ");
-        req.body.unstructured[idx] = {
-          type: st[0],
-          subtype: st[1],
-          asset: st[2],
-        };
-      }
-    });
-    // console.log(req.body);
+    // console.log(req);
+    if (req.body.unstructured) {
+      req.body.unstructured.map((el, idx) => {
+        var st = (typeof el).toString();
+        if (st == "string") {
+          st = el.split("$$");
+          req.body.unstructured[idx] = {
+            type: st[0],
+            subtype: st[1],
+            asset: st[2],
+          };
+        }
+      });
+    }
+    // if (req.body.moderator) {
+    //   var len = req.body.moderator.length;
+    //   console.log(len);
+    // }
+    console.log(req.body);
     res.send({ ok: "ok" });
     // try {
     //   const {
