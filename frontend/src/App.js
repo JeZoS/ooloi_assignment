@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const App = () => {
+  const [title, setTitle] = useState("");
+  const [reg_link, setReg_link] = useState("");
+  const [when, setWhen] = useState("");
+  const [about_ev, setAbout_ev] = useState("");
+  const [joining_info, setJoining_info] = useState("");
+  const [organised_by, setOrganised_by] = useState("");
+  const [organizers, setOrganizers] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [singletag, setSingletag] = useState("");
   const [change, setChange] = useState(false);
   const [unstructured, setFiles] = useState([]);
   const [input_text, setText] = useState("");
@@ -140,7 +149,7 @@ const App = () => {
                 let preview = URL.createObjectURL(el);
                 return (
                   <div key={idx} className="img_container">
-                    <img alt="aksgf" className="width" src={preview}></img>
+                    <img alt="files" className="width" src={preview}></img>
                   </div>
                 );
               } else {
@@ -181,7 +190,7 @@ const App = () => {
               let preview = URL.createObjectURL(el);
               return (
                 <div key={idx} className="img_container">
-                  <img alt="aksgf" className="width" src={preview}></img>
+                  <img alt="files" className="width" src={preview}></img>
                 </div>
               );
             } else {
