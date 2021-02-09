@@ -15,11 +15,11 @@ var storage = multer.diskStorage({
       new Date().toISOString() +
       "." +
       file.mimetype.split("/")[1];
-    // if (!req.body[file.fieldname]) {
-    //   req.body[file.fieldname] = [{ type: file.mimetype, asset: filname }];
-    // } else {
-    //   req.body[file.fieldname].push({ type: file.mimetype, asset: filname });
-    // }
+    if (!req.body[file.fieldname]) {
+      req.body[file.fieldname] = [{ type: file.mimetype, asset: filname }];
+    } else {
+      req.body[file.fieldname].push({ type: file.mimetype, asset: filname });
+    }
     cb(null, filname);
   },
 });
@@ -52,76 +52,89 @@ const upload = multer({ storage: storage });
 //
 //
 //Create Event  POST ----localhost:port/event
-router.post(
-  "/",
-  // upload.fields([
-  //   { name: "unstructured" },
-  //   { name: "moderator" },
-  //   { name: "speakers" },
-  // ]),
-  upload.any(),
-  async (req, res) => {
-    if (req.body.unstructured) {
-      if ((typeof req.body.unstructured).toString() === "string") {
-        var unData = req.body.unstructured;
-        req.body.unstructured = [JSON.parse(unData.toString())];
-      } else {
-        req.body.unstructured.map((el, idx) => {
-          var st = (typeof el).toString();
-          if (st === "string") {
-            req.body.unstructured[idx] = JSON.parse(el.toString());
-          }
-        });
-      }
-    }
-    if (req.body.speakers) {
-      req.body.speakers.map((el, idx) => {
-        req.body.speakers[idx] = JSON.parse(el.toString());
-        var image_Name = req.body.speakers[idx].image;
-        var img_path = null;
-        req.files.map((fl) => {
-          if (fl.originalname === image_Name) {
-            img_path = fl.path;
-          }
-        });
-        req.body.speakers[idx].image = img_path;
+router.post("/", upload.any(), async (req, res) => {
+  req.body.image = null;
+  if (req.body.unstructured) {
+    if ((typeof req.body.unstructured).toString() === "string") {
+      var unData = req.body.unstructured;
+      req.body.unstructured = [JSON.parse(unData.toString())];
+    } else {
+      req.body.unstructured.map((el, idx) => {
+        var st = (typeof el).toString();
+        if (st === "string") {
+          req.body.unstructured[idx] = JSON.parse(el.toString());
+        }
       });
     }
-    console.log(req.body, req.files);
-    res.send({ ok: "ok" });
-    // try {
-    //   const {
-    //     title,
-    //     reg_link,
-    //     when,
-    //     about_ev,
-    //     speakers,
-    //     moderator,
-    //     unstructured,
-    //     joining_info,
-    //     organised_by,
-    //     tags,
-    //   } = req.body;
-    //   const event = new Event({
-    //     title,
-    //     reg_link,
-    //     when,
-    //     about_ev,
-    //     speakers,
-    //     moderator,
-    //     material,
-    //     joining_info,
-    //     organised_by,
-    //     tags,
-    //   });
-    //   const newEvent = await event.save();
-    //   res.send({ created_event: newEvent });
-    // } catch (err) {
-    //   console.log(err);
-    //   res.send({ error: err });
-    // }
   }
-);
+  if (req.body.speakers) {
+    if ((typeof req.body.speakers).toString() === "string") {
+      var unData = req.body.speakers;
+      req.body.speakers = [unData];
+    }
+    req.body.speakers.map((el, idx) => {
+      req.body.speakers[idx] = JSON.parse(el.toString());
+      var image_Name = req.body.speakers[idx].image;
+      var img_path = null;
+      req.files.map((fl) => {
+        if (fl.originalname === image_Name) {
+          img_path = fl.path;
+        }
+      });
+      req.body.speakers[idx].image = img_path;
+    });
+  }
+  if (req.body.moderators) {
+    if ((typeof req.body.moderators).toString() === "string") {
+      var unData = req.body.moderators;
+      req.body.moderators = [unData];
+    }
+    req.body.moderators.map((el, idx) => {
+      req.body.moderators[idx] = JSON.parse(el.toString());
+      var image_Name = req.body.moderators[idx].image;
+      var img_path = null;
+      req.files.map((fl) => {
+        if (fl.originalname === image_Name) {
+          img_path = fl.path;
+        }
+      });
+      req.body.moderators[idx].image = img_path;
+    });
+  }
+  console.log(req.body, req.files);
+  res.send({ ok: "ok" });
+  // try {
+  //   const {
+  //     title,
+  //     reg_link,
+  //     when,
+  //     about_ev,
+  //     speakers,
+  //     moderator,
+  //     unstructured,
+  //     joining_info,
+  //     organised_by,
+  //     tags,
+  //   } = req.body;
+  //   const event = new Event({
+  //     title,
+  //     reg_link,
+  //     when,
+  //     about_ev,
+  //     speakers,
+  //     moderator,
+  //     material,
+  //     joining_info,
+  //     organised_by,
+  //     tags,
+  //   });
+  //   const newEvent = await event.save();
+  //   res.send({ created_event: newEvent });
+  // } catch (err) {
+  //   console.log(err);
+  //   res.send({ error: err });
+  // }
+});
 
 //
 //

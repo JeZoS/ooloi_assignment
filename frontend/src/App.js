@@ -31,10 +31,28 @@ const App = () => {
     setImagess(imagess);
     speakers.push(JSON.stringify(obj));
     setAll(speakers);
-    console.log(speakers, imagess);
+    setChange(!change);
   };
   //
   //
+  //
+  //
+  //
+  // Moderator
+  const moderatorHandler = (e) => {
+    setSpeakImg(e.target.files[0]);
+  };
+  const AddModeratorHandler = (e) => {
+    var obj = {
+      name: moderator,
+      image: speakImg.name,
+    };
+    imagess.push(speakImg);
+    setImagess(imagess);
+    allmoderators.push(JSON.stringify(obj));
+    setAllModerators(allmoderators);
+    setChange(!change);
+  };
   //
   //
   //
@@ -86,6 +104,9 @@ const App = () => {
     });
     speakers.forEach((el) => {
       form.append("speakers", el);
+    });
+    allmoderators.forEach((el) => {
+      form.append("moderators", el);
     });
     imagess.forEach((el) => {
       form.append("image", el);
@@ -149,7 +170,34 @@ const App = () => {
             <button onClick={(e) => addHandler(e)}>Add text</button>
           </div>
         </div>
-        <div className="speaker files">
+        {/*
+         */}
+        {/*
+         */}
+        {/* Speaker Section */}
+        <div className="preview">
+          {imagess.map((el, idx) => {
+            if ((typeof el).toString() === "object") {
+              let preview = URL.createObjectURL(el);
+              return (
+                <div key={idx} className="img_container">
+                  <img alt="aksgf" className="width" src={preview}></img>
+                </div>
+              );
+            } else {
+              let dttt = JSON.parse(el);
+              return (
+                <div key={idx} className="txt_container">
+                  <h5>{dttt.data}</h5>
+                </div>
+              );
+            }
+          })}
+        </div>
+        <div
+          className="speaker files"
+          style={{ backgroundColor: "teal", margin: "20px" }}
+        >
           <h1>Speakers</h1>
           <input
             type="file"
@@ -165,7 +213,7 @@ const App = () => {
               onChange={(e) => setSpeaker(e.target.value)}
             ></input>
           </label>
-          <label>
+          {/* <label>
             About
             <input
               type="text"
@@ -173,8 +221,43 @@ const App = () => {
               // value={speaker ? speaker : " "}
               // onChange={(e) => setSpeaker(e.target.value)}
             ></input>
-          </label>
+          </label> */}
           <button onClick={(e) => AddSpeakerHandler(e)}>Add Speaker</button>
+        </div>
+        {/*
+         */}
+        {/*
+         */}
+        {/* Moderator Section */}
+        <div
+          className="speaker files"
+          style={{ backgroundColor: "teal", margin: "20px" }}
+        >
+          <h1>Moderators</h1>
+          <input
+            type="file"
+            name="file"
+            onChange={(e) => moderatorHandler(e)}
+          ></input>
+          <label>
+            Name
+            <input
+              type="text"
+              placeholder={moderator ? "name" : " "}
+              value={moderator ? moderator : " "}
+              onChange={(e) => setModerator(e.target.value)}
+            ></input>
+          </label>
+          {/* <label>
+            About
+            <input
+              type="text"
+              // placeholder={speaker ? "name" : " "}
+              // value={speaker ? speaker : " "}
+              // onChange={(e) => setSpeaker(e.target.value)}
+            ></input>
+          </label> */}
+          <button onClick={(e) => AddModeratorHandler(e)}>Add Speaker</button>
         </div>
       </div>
       <button onClick={(e) => submitHandler()}>Submit</button>
