@@ -8,7 +8,12 @@ const App = () => {
   const [speaker, setSpeaker] = useState("");
   const [speakImg, setSpeakImg] = useState();
   const [speakers, setAll] = useState([]);
+  const [moderator, setModerator] = useState("");
+  const [allmoderators, setAllModerators] = useState([]);
   const [imagess, setImagess] = useState([]);
+  //
+  //
+  //
   //
   //
   //
@@ -32,6 +37,10 @@ const App = () => {
   //
   //
   //
+  //
+  //
+  //
+  //
   const fileHandler = (e) => {
     e.preventDefault();
     var img = e.target.files[0];
@@ -41,6 +50,10 @@ const App = () => {
     setChange(!change);
     console.log(unstructured);
   };
+  //
+  //
+  //
+  //
   //
   //
   //
@@ -58,6 +71,9 @@ const App = () => {
     setText("");
     console.log(unstructured);
   };
+  //
+  //
+  //
   //
   //
   //
@@ -87,6 +103,8 @@ const App = () => {
   //
   //
   //
+  //
+  //
   return (
     <div className="App">
       <div className="form">
@@ -95,8 +113,26 @@ const App = () => {
           style={{ backgroundColor: "teal", margin: "20px" }}
         >
           <h1>Unstructured</h1>
-          <p>Total_data_{unstructured.length}</p>
-          <label>Select File</label>
+          <div className="preview">
+            {unstructured.map((el, idx) => {
+              if ((typeof el).toString() === "object") {
+                let preview = URL.createObjectURL(el);
+                return (
+                  <div key={idx} className="img_container">
+                    <img alt="aksgf" className="width" src={preview}></img>
+                  </div>
+                );
+              } else {
+                let dttt = JSON.parse(el);
+                return (
+                  <div key={idx} className="txt_container">
+                    <h5>{dttt.data}</h5>
+                  </div>
+                );
+              }
+            })}
+          </div>
+          <label>Select File Or Add Text</label>
           <div>
             <input
               type="file"
@@ -114,17 +150,30 @@ const App = () => {
           </div>
         </div>
         <div className="speaker files">
+          <h1>Speakers</h1>
           <input
             type="file"
             name="file"
             onChange={(e) => speakHandler(e)}
           ></input>
-          <input
-            type="text"
-            placeholder={speaker ? "about" : " "}
-            value={speaker ? speaker : " "}
-            onChange={(e) => setSpeaker(e.target.value)}
-          ></input>
+          <label>
+            Name
+            <input
+              type="text"
+              placeholder={speaker ? "name" : " "}
+              value={speaker ? speaker : " "}
+              onChange={(e) => setSpeaker(e.target.value)}
+            ></input>
+          </label>
+          <label>
+            About
+            <input
+              type="text"
+              // placeholder={speaker ? "name" : " "}
+              // value={speaker ? speaker : " "}
+              // onChange={(e) => setSpeaker(e.target.value)}
+            ></input>
+          </label>
           <button onClick={(e) => AddSpeakerHandler(e)}>Add Speaker</button>
         </div>
       </div>
