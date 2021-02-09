@@ -118,8 +118,9 @@ router.post("/", upload.any(), async (req, res) => {
       req.body.moderators[idx].image = img_path;
     });
   }
-  req.body.organised_by = JSON.parse(req.body.organised_by);
-  req.body.tags = JSON.parse(req.body.tags);
+  if (req.body.organised_by)
+    req.body.organised_by = JSON.parse(req.body.organised_by);
+  if (req.body.tags) req.body.tags = JSON.parse(req.body.tags);
 
   //
   //
