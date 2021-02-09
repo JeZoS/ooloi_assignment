@@ -65,6 +65,8 @@ router.get("/:id", async (req, res) => {
 //Create Event  POST ----localhost:port/event
 router.post("/", upload.any(), async (req, res) => {
   req.body.image = null;
+  //
+  // to make array of unstructured data and parsing objects to their original form
   if (req.body.unstructured) {
     if ((typeof req.body.unstructured).toString() === "string") {
       var unData = req.body.unstructured;
@@ -78,6 +80,8 @@ router.post("/", upload.any(), async (req, res) => {
       });
     }
   }
+  //
+  // to make array of speakers and combine speaker with its respective image
   if (req.body.speakers) {
     if ((typeof req.body.speakers).toString() === "string") {
       var unData = req.body.speakers;
@@ -95,6 +99,8 @@ router.post("/", upload.any(), async (req, res) => {
       req.body.speakers[idx].image = img_path;
     });
   }
+  //
+  // to make array of moderators and combine moderator with its respective image
   if (req.body.moderators) {
     if ((typeof req.body.moderators).toString() === "string") {
       var unData = req.body.moderators;
@@ -114,8 +120,10 @@ router.post("/", upload.any(), async (req, res) => {
   }
   req.body.organised_by = JSON.parse(req.body.organised_by);
   req.body.tags = JSON.parse(req.body.tags);
-  // console.log(req.body);
-  // res.send({ ok: "ok" });
+
+  //
+  //
+  // pushing to mongodb
   try {
     const {
       title,
