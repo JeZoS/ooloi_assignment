@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+}
+
+.files {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.files > div {
+  margin: 10px;
+}
