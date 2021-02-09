@@ -4,3 +4,4 @@
 --use frontend to post, get, or update data
 --!! only devil and i know what i'hv done in this project !!
 --you can also use postman to check API's but i'll suggest not to use it as its very complicated
+--use /Postman_examples for more info
