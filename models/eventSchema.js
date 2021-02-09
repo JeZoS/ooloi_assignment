@@ -11,7 +11,7 @@ var eventSchema = new mongoose.Schema({
     required: true,
   },
   when: {
-    type: Date,
+    type: String,
     required: true,
   },
   about_ev: {
@@ -23,33 +23,37 @@ var eventSchema = new mongoose.Schema({
       name: {
         type: String,
       },
-      about: {
-        type: String,
-      },
+      // about: {
+      //   type: String,
+      // },
       image: {
         type: String,
       },
     },
   ],
-  moderator: [
+  moderators: [
     {
       name: {
         type: String,
       },
-      about: {
-        type: String,
-      },
+      // about: {
+      //   type: String,
+      // },
       image: {
         type: String,
       },
     },
   ],
-  material: [
+  unstructured: [
     {
-      data_type: {
+      type: {
         type: String,
       },
-      data: {
+      subtype: {
+        type: String,
+        default: "image",
+      },
+      asset: {
         type: String,
       },
     },
@@ -58,20 +62,8 @@ var eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  organised_by: [
-    {
-      name: {
-        type: String,
-      },
-    },
-  ],
-  tags: [
-    {
-      tag: {
-        type: String,
-      },
-    },
-  ],
+  organised_by: [],
+  tags: [],
 });
 
 //Export the model

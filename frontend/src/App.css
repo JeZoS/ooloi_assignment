@@ -49,3 +49,8 @@ input {
 button {
   margin: 10px;
 }
+
+.fields {
+  display: flex;
+  flex-direction: column;
+}

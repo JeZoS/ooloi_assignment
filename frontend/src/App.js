@@ -120,6 +120,13 @@ const App = () => {
     imagess.forEach((el) => {
       form.append("image", el);
     });
+    form.append("title", title);
+    form.append("reg_link", reg_link);
+    form.append("when", when);
+    form.append("about_ev", about_ev);
+    form.append("joining_info", joining_info);
+    form.append("organised_by", JSON.stringify(organizers));
+    form.append("tags", JSON.stringify(tags));
     const { data } = await axios({
       method: "post",
       url: "/event/",
@@ -138,6 +145,83 @@ const App = () => {
   return (
     <div className="App">
       <div className="form">
+        <div className="fields">
+          <label>
+            {" "}
+            <input
+              value={title ? title : ""}
+              onChange={(e) => setTitle(e.target.value)}
+            ></input>{" "}
+            Set title{" "}
+          </label>
+          <label>
+            {" "}
+            <input
+              value={reg_link ? reg_link : ""}
+              onChange={(e) => setReg_link(e.target.value)}
+            ></input>{" "}
+            Set Registration Link{" "}
+          </label>
+          <label>
+            {" "}
+            <input
+              value={when ? when : ""}
+              onChange={(e) => setWhen(e.target.value)}
+            ></input>{" "}
+            Set Date{" "}
+          </label>
+          <label>
+            {" "}
+            <input
+              value={about_ev ? about_ev : ""}
+              onChange={(e) => setAbout_ev(e.target.value)}
+            ></input>{" "}
+            About Event{" "}
+          </label>
+          <label>
+            {" "}
+            <input
+              value={joining_info ? joining_info : ""}
+              onChange={(e) => setJoining_info(e.target.value)}
+            ></input>{" "}
+            Joining info{" "}
+          </label>
+          <div
+            style={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}
+          >
+            {organizers.map((el) => (
+              <p style={{ margin: "5px" }}>{el}</p>
+            ))}
+          </div>
+          <label>
+            {" "}
+            <input
+              value={organised_by ? organised_by : ""}
+              onChange={(e) => {
+                setOrganised_by(e.target.value);
+                setOrganizers(e.target.value.split(" "));
+                if (organised_by.length === 0) setOrganizers([" "]);
+              }}
+            ></input>{" "}
+            Add organizers <span>(for full names use under_score)</span>
+          </label>
+          <div style={{ display: "flex" }}>
+            {tags.map((el) => (
+              <p style={{ margin: "5px" }}>{el}</p>
+            ))}
+          </div>
+          <label>
+            {" "}
+            <input
+              value={singletag ? singletag : ""}
+              onChange={(e) => {
+                setSingletag(e.target.value);
+                setTags(e.target.value.split(" "));
+              }}
+            ></input>{" "}
+            Add Tag{" "}
+          </label>
+        </div>
         <div
           className="files"
           style={{ backgroundColor: "teal", margin: "20px" }}
